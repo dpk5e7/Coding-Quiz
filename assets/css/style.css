@@ -1,0 +1,147 @@
+:root {
+  /* declare a variable with `--` syntax */
+  --header-bg-color: #13293d;
+  --header-text-color: white;
+  --text-color: black;
+  --bg-color: #C0C0C0;
+  --section-bg-color: #F5F5F5;
+  --border-radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  margin: 0;
+  background: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+header {
+  padding: 5px;
+  text-align: left;
+  color: var(--section-bg-color);
+  background-color: var(--header-bg-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+  min-width: 300px;
+}
+
+nav a {
+  padding: 14px 20px;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--section-bg-color);
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  text-decoration: underline;
+  transition: all 0.3s ease;
+}
+
+h1 {
+  font-size: 200%;
+}
+
+h2 {
+  font-size: 150%;
+  text-decoration: underline;
+}
+
+h3 {
+  font-size: 125%;
+}
+
+h4 {
+  font-size: 100%;
+}
+
+main {
+  display: flex;  
+  flex-wrap: wrap;
+}
+
+.sections {
+  flex: 4;
+  padding: 12px 12px 12px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+section {
+  padding: 20px;
+  color: var(--text-color);
+  background-color: var(--section-bg-color);
+  text-align: center;
+}
+
+section p {
+  text-align: center;
+  margin: 8px 0px 0px 0px;
+}
+
+#WordGuess {
+  border-radius: var(--border-radius);
+}
+
+button {
+  background-color: var(--header-bg-color);
+  border-radius: 8px;
+  color: var(--header-text-color);
+  cursor: pointer;
+  font-size: 1.2em;
+  letter-spacing: 0.21px;
+  line-height: 16px;
+  max-width: 255px;
+  padding: 20px 52px;
+  text-align: center;
+  transition-duration: 0.15s;
+  transition-property: background-color;
+  transition-timing-function: linear;
+  margin: 0.6em auto;
+  display: block;
+}
+
+footer {
+  padding: 5px;
+  text-align: left;
+  color: var(--header-text-color);
+  background-color: var(--header-bg-color);
+}
+
+footer a {
+  color: var(--header-text-color);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Tablets - header changes color */
+@media screen and (max-width: 992px) {
+  .card {
+    width: 50%;
+  }
+}
+
+/* Large smartphones - header changes color */
+@media screen and (max-width: 768px) {
+  /* .card {
+    width: 100%;
+  } */
+}

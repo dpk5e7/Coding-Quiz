@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dan Kelly Portfolio</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <!--  -->
+      <h1>Dan Kelly</h1>
+      <!-- Navigation -->
+      <nav>
+        <ul>
+          <li><a href="#WordGuess">Word Guess</a></li>
+        </ul>
+      </nav>
+    </header>  
+
+    <!-- Body -->
+    <main>
+      <div class="sections">
+        <section id="WordGuess">
+          <h2>Word Guess</h2>
+          <p>Word: <span id="wordToGuess"></span></p>
+          <p>Remaining Letters: <span id="remainingLetters">abcdefghijklmnopqrstuvwxyz</span></p>
+          <p><span id="timeRemaining"></span></p>
+          <p><button id="startButton">Start</button></p> 
+          <p>Wins: <span id="userWins"></span></p>
+          <p>Losses: <span id="userLosses"></span></p>
+          <p><button id="resetButton">Reset Results</button></p>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <h4>
+        &copy; 2022 <a href="https://www.kellysoftware.org" target="_blank">Kelly Software Solutions</a>
+      </h4>
+    </footer>
+
+    <script src="./assets/js/script.js"></script>
+  </body>
+</html>
