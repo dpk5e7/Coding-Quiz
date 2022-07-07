@@ -66,3 +66,5 @@ This project is not licensed.
 ## Acknowledgments
 
 - [Denver Coding Bootcamp](https://bootcamp.du.edu/)
+- [W3Schools](https://www.w3schools.com/)
+- [Mozilla Developer Network](https://developer.mozilla.org/)

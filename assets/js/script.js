@@ -1,151 +1,271 @@
-var wordToGuess = document.querySelector("#wordToGuess");
-var remainingLetters = document.querySelector("#remainingLetters");
-var timeRemaining = document.querySelector("#timeRemaining");
+var timeRemaining = document.querySelector("#pTimeRemaining");
 var startButton = document.querySelector("#startButton");
-var resetButton = document.querySelector("#resetButton");
-var userWins = document.querySelector("#userWins");
-var userLosses = document.querySelector("#userLosses");
+var submitButton = document.querySelector("#submitButton");
+var pQuestion = document.querySelector("#pQuestion");
+var olOptions = document.querySelector("#olOptions");
+var playerName = document.querySelector("#playerName");
+var viewHighScores = document.querySelector("#viewHighScores");
+var pHighScores = document.querySelector("#pHighScores");
 
-const alphabet = "abcdefghijklmnopqrstuvwxyz";
-let selectedWord = "";
-
-var usrRecord = {
-  wins: 0,
-  losses: 0
+var question = {
+  questionText: "Question Text",
+  answers: {
+    a: "Option A",
+    b: "Option B",
+    c: "Option C",
+    d: "Option D",
+  },
+  correctAnswer: "a",
 };
+var questions = [];
 
-var timeLeft = 30;
+var score = {
+  personName: "",
+  personScore: 0,
+  dateTimeStamp: Date.now(),
+};
+var highScores = [];
+
+var currentScore = 0;
+
+var timeLeft = 60;
 var timeInterval;
 
-startButton.addEventListener("click", function(event) {
+var currentQuestionIndex = 0;
+
+startButton.addEventListener("click", function (event) {
   event.preventDefault();
 
   // Clear timer & refresh remaining letters
-  remainingLetters.innerHTML = alphabet;
   timeRemaining.innerHTML = "";
- 
-  // Select a word
-  selectedWord = selectRandomWord();
-  wordToGuess.innerHTML = "";
-  for (let i = 0; i < selectedWord.length; i++) {
-    wordToGuess.innerHTML += "_";
-  }
+
+  // display first question
+  currentQuestionIndex = 0;
+  displayQuestion(currentQuestionIndex);
+  // hide start button
+  startButton.setAttribute("class", "hidden");
+  pQuestion.setAttribute("class", "shown");
+  olOptions.setAttribute("class", "shown");
+  viewHighScores.innerHTML = "View Highscores";
+  pHighScores.innerHTML = "";
 
   // Start Timer
-  timeLeft = 30;
+  timeLeft = 60;
   timeInterval = setInterval(function () {
-    
-    timeRemaining.innerHTML = "Time Remaining: " + timeLeft + " seconds remaining.";
+    timeRemaining.innerHTML = "Time Left: " + timeLeft;
 
-    if(timeLeft === 0) {
-      
-      timeRemaining.innerHTML = "You lose!";
-      
-      // Stops execution of action at set interval
-      clearInterval(timeInterval);
-      // Calls function to display user record
-      usrRecord.losses++;
-      localStorage.setItem("usrRecord", JSON.stringify(usrRecord));
-      displayWinLossRecord();
+    if (timeLeft <= 0) {
+      timeRemaining.innerHTML = "Time's up!";
+
+      // Calls function to complete quiz
+      endQuiz();
     }
     timeLeft--;
   }, 1000);
 });
 
-function selectRandomWord() {
-  var words = ["Apple",
-    "Apricot",
-    "Avocado",
-    "Banana",
-    "Blackberry",
-    "Blueberry",
-    "Boysenberry",
-    "Cherry",
-    "Coconut",
-    "Elderberry",
-    "Grape",
-    "Raisin",
-    "Grapefruit",
-    "Huckleberry",
-    "Kiwi",
-    "Kumquat",
-    "Lemon",
-    "Lime",
-    "Mango",
-    "Melon",
-    "Cantaloupe",
-    "Watermelon",
-    "Nectarine",
-    "Orange",
-    "Peach",
-    "Pear",
-    "Plum",
-    "Pineapple",
-    "Raspberry",
-    "Strawberry"];
-  return words[Math.floor(Math.random() * words.length)].toLowerCase();
-}
+// Need a function for when an li is clicked.
+olOptions.addEventListener("click", function (event) {
+  var element = event.target;
+  // TODO: Describe the functionality of the following `if` statement.
+  // if a Complete button is clicked, remove the appropriate list item.
+  if (element.matches("li") === true) {
+    // selectedAnswer should have the selected answer in it
+    var selectedAnswer = element.getAttribute("data-index");
 
-function keydownAction(event) {
-
-  // if timer is running.
-  if (timeLeft > 0) {
-    // if in "abcdefghijklmnopqrstuvwxyz", remove from remaining letters
-    let lowerKey = event.key.toLowerCase();
-    if (alphabet.indexOf(lowerKey) != -1) {
-      if (remainingLetters.innerHTML.indexOf(lowerKey) != -1) {
-        remainingLetters.innerHTML = remainingLetters.innerHTML.replace(lowerKey, "_");
+    if (selectedAnswer != questions[currentQuestionIndex].correctAnswer) {
+      // They got it wrong.  Deduct 5 seconds.
+      timeLeft -= 5;
+      if (timeLeft <= 0) {
+        timeRemaining.innerHTML = "Time Left: " + timeLeft;
+        endQuiz();
       }
     }
 
-    // Find the letter in wordToGuess
-    var indexLowerKey = selectedWord.indexOf(lowerKey);
-    let newWord = "";
-    if (indexLowerKey != -1) {
-      for (let i = 0; i < selectedWord.length; i++) {
-        if (selectedWord[i] === lowerKey) {
-          newWord += lowerKey;
-        }
-        else {
-          newWord += wordToGuess.innerHTML.charAt(i);
-        }
-      }
-      wordToGuess.innerHTML = newWord;
-      
-      // Was it the last letter?  If so, stop timer and update record
-      if (newWord.indexOf("_") == -1) {
-        clearInterval(timeInterval);
-        timeRemaining.innerHTML = "You win!";
-        usrRecord.wins++;
-        localStorage.setItem("usrRecord", JSON.stringify(usrRecord));
-        displayWinLossRecord();
-      }
-    }
+    nextQuestion();
   }
-}
-document.addEventListener("keydown", keydownAction);
-
-function displayWinLossRecord() {
-  if (localStorage.getItem("usrRecord") != null) {
-    usrRecord = JSON.parse(localStorage.getItem("usrRecord"));
-    userWins.textContent = usrRecord.wins;
-    userLosses.textContent = usrRecord.losses;
-  }
-  else {
-    userWins.textContent = 0;
-    userLosses.textContent = 0;
-  }
-}
-
-resetButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  localStorage.clear();
-  usrRecord.wins = 0;
-  usrRecord.losses = 0;
-  displayWinLossRecord();
 });
 
+function nextQuestion() {
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    displayQuestion(currentQuestionIndex);
+  } else {
+    endQuiz();
+  }
+}
+
+// End quiz
+function endQuiz() {
+  // Stops execution of action at set interval
+  clearInterval(timeInterval);
+
+  // Hide question & answers
+  pQuestion.setAttribute("class", "hidden");
+  olOptions.setAttribute("class", "hidden");
+
+  // Display textbox for initials & saveScore button
+  playerName.setAttribute("class", "shown");
+  submitButton.setAttribute("class", "shown");
+}
+
+submitButton.addEventListener("click", function (event) {
+  event.preventDefault();
+  // Save score to localStorage
+  score = {
+    personName: playerName.value.trim(),
+    personScore: timeLeft + 1, // For some reason it decrements an extra one.
+    dateTimeStamp: Date.now(),
+  };
+
+  highScores.push(score);
+  highScores.sort(sortHighScores);
+  if (highScores.length > 5) {
+    highScores.pop();
+  }
+
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+
+  // Show Start Button again
+  startButton.setAttribute("class", "shown");
+
+  // Hide playername and submit button
+  playerName.setAttribute("class", "hidden");
+  submitButton.setAttribute("class", "hidden");
+
+  showHighScores();
+});
+
+// Sort highScores
+function sortHighScores(a, b) {
+  if (a.personScore > b.personScore) return -1;
+  else if (a.personScore < b.personScore) return 1;
+  else return 0;
+}
+
+// Function for clicking on View Highscores to show them
+viewHighScores.addEventListener("click", function (event) {
+  event.preventDefault();
+  showHighScores();
+});
+
+// Function to show the high scores
+function showHighScores() {
+  if (pHighScores.innerHTML == "") {
+    if (localStorage.getItem("highScores") != null) {
+      highScores = JSON.parse(localStorage.getItem("highScores"));
+      for (let i = 0; i < highScores.length; i++) {
+        score = highScores[i];
+        var dtScore = new Date(score.dateTimeStamp);
+        pHighScores.innerHTML += `Player: ${score.personName}, Score: ${
+          score.personScore
+        }, DateTime: ${dtScore.toLocaleString()}<br />`;
+      }
+      viewHighScores.innerHTML = "Hide Highscores";
+    }
+  } else {
+    viewHighScores.innerHTML = "View Highscores";
+    pHighScores.innerHTML = "";
+  }
+}
+
+function displayQuestion(index) {
+  if (index < questions.length) {
+    question = questions[index];
+
+    pQuestion.innerHTML = question.questionText;
+
+    const answers = Object.values(question.answers);
+    var abcd = ["a", "b", "c", "d"];
+
+    // Need to remove all lis from ol
+    while (olOptions.firstChild) {
+      olOptions.removeChild(olOptions.firstChild);
+    }
+
+    for (let i = 0; i < answers.length; i++) {
+      var li = document.createElement("li");
+      li.textContent = "" + (i + 1) + ". " + answers[i];
+      li.setAttribute("data-index", abcd[i]);
+      olOptions.appendChild(li);
+    }
+  }
+}
+
+function buildQuestions() {
+  const question1 = {
+    questionText: "JavaScript has a file extension of:",
+    answers: {
+      a: ".java",
+      b: ".js",
+      c: ".cs",
+      d: ".html",
+    },
+    correctAnswer: "b",
+  };
+  questions.push(question1);
+
+  const question2 = {
+    questionText: "CSS is short for:",
+    answers: {
+      a: "Cascading Style Sheets",
+      b: "C Sharp Sharp",
+      c: "Cows Singing Songs",
+      d: "Cool Super Style",
+    },
+    correctAnswer: "a",
+  };
+  questions.push(question2);
+
+  const question3 = {
+    questionText: "Is JavaScript the same thing as Java?",
+    answers: {
+      a: "True",
+      b: "Most Definitely",
+      c: "Of course, they both have Java in the name.",
+      d: "C'mon man, no.",
+    },
+    correctAnswer: "d",
+  };
+  questions.push(question3);
+
+  const question4 = {
+    questionText: "HTML is short for:",
+    answers: {
+      a: "HTTP Model Language",
+      b: "Hyperpace Is Too Slow",
+      c: "HyperText Markup Language",
+      d: "Nothing, it's just random letters.",
+    },
+    correctAnswer: "c",
+  };
+  questions.push(question4);
+
+  const question5 = {
+    questionText: "FlexBox was released in what year?",
+    answers: {
+      a: "1995",
+      b: "2002",
+      c: "2009",
+      d: "2015",
+    },
+    correctAnswer: "c",
+  };
+  questions.push(question5);
+}
+
 function init() {
-  displayWinLossRecord();
+  // build questions
+  buildQuestions();
+
+  // Hide controls that should not be displayed on init
+  pQuestion.setAttribute("class", "hidden");
+  olOptions.setAttribute("class", "hidden");
+  playerName.setAttribute("class", "hidden");
+  submitButton.setAttribute("class", "hidden");
+
+  if (localStorage.getItem("highScores") != null) {
+    highScores = JSON.parse(localStorage.getItem("highScores"));
+  }
 }
 init();
