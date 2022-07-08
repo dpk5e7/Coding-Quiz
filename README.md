@@ -6,6 +6,8 @@ The purpose of this challenge is to build a coding assessment.
 
 A typical coding assessment includes both multiple-choice questions and interactive coding challenges. This will be a timed coding quiz with multiple-choice questions. This app will run in the browser and will feature dynamically updated HTML and CSS powered by JavaScript code.
 
+Note: I watched the video on Bootcamp Spot on jQuery and couldn't help myself from using the "toggleClass" function for making ietms appear and disappear on the screen.
+
 ### User Story
 
 ```

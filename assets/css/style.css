@@ -92,7 +92,7 @@ section p {
 }
 
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 
 .shown {
@@ -104,14 +104,14 @@ section p {
   border-top-right-radius: var(--border-radius);
 }
 
-#CodingQuiz ol {
+section ol {
   width: fit-content;
   list-style: upper-roman;
   margin-left: 25%;
   margin-right: 25%;
 }
 
-#CodingQuiz li {
+section li {
   color: var(--header-text-color);
   margin-left: 35px;
   background-color: var(--header-bg-color);
@@ -122,7 +122,7 @@ section p {
   cursor: pointer;
 }
 
-#CodingQuiz li:hover {
+section li:hover {
   box-shadow: 2px 2px 5px var(--box-shadow-color);
 }
 

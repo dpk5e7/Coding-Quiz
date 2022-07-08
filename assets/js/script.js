@@ -42,10 +42,13 @@ startButton.addEventListener("click", function (event) {
   // display first question
   currentQuestionIndex = 0;
   displayQuestion(currentQuestionIndex);
+
   // hide start button
-  startButton.setAttribute("class", "hidden");
-  pQuestion.setAttribute("class", "shown");
-  olOptions.setAttribute("class", "shown");
+  $("#startButton").toggleClass("hidden");
+
+  $("#pQuestion").toggleClass("hidden");
+  $("#olOptions").toggleClass("hidden");
+
   viewHighScores.innerHTML = "View Highscores";
   pHighScores.innerHTML = "";
 
@@ -64,7 +67,7 @@ startButton.addEventListener("click", function (event) {
   }, 1000);
 });
 
-// Need a function for when an li is clicked.
+// A function for when an li is clicked.
 olOptions.addEventListener("click", function (event) {
   var element = event.target;
   // TODO: Describe the functionality of the following `if` statement.
@@ -101,12 +104,12 @@ function endQuiz() {
   clearInterval(timeInterval);
 
   // Hide question & answers
-  pQuestion.setAttribute("class", "hidden");
-  olOptions.setAttribute("class", "hidden");
+  $("#pQuestion").toggleClass("hidden");
+  $("#olOptions").toggleClass("hidden");
 
   // Display textbox for initials & saveScore button
-  playerName.setAttribute("class", "shown");
-  submitButton.setAttribute("class", "shown");
+  $("#playerName").toggleClass("hidden");
+  $("#submitButton").toggleClass("hidden");
 }
 
 submitButton.addEventListener("click", function (event) {
@@ -127,11 +130,11 @@ submitButton.addEventListener("click", function (event) {
   localStorage.setItem("highScores", JSON.stringify(highScores));
 
   // Show Start Button again
-  startButton.setAttribute("class", "shown");
+  $("#startButton").toggleClass("hidden");
 
   // Hide playername and submit button
-  playerName.setAttribute("class", "hidden");
-  submitButton.setAttribute("class", "hidden");
+  $("#playerName").toggleClass("hidden");
+  $("#submitButton").toggleClass("hidden");
 
   showHighScores();
 });
@@ -259,10 +262,10 @@ function init() {
   buildQuestions();
 
   // Hide controls that should not be displayed on init
-  pQuestion.setAttribute("class", "hidden");
-  olOptions.setAttribute("class", "hidden");
-  playerName.setAttribute("class", "hidden");
-  submitButton.setAttribute("class", "hidden");
+  $("#pQuestion").toggleClass("hidden");
+  $("#olOptions").toggleClass("hidden");
+  $("#playerName").toggleClass("hidden");
+  $("#submitButton").toggleClass("hidden");
 
   if (localStorage.getItem("highScores") != null) {
     highScores = JSON.parse(localStorage.getItem("highScores"));
