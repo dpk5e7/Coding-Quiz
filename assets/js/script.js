@@ -37,7 +37,7 @@ startButton.addEventListener("click", function (event) {
   event.preventDefault();
 
   // Clear timer & refresh remaining letters
-  timeRemaining.innerHTML = "";
+  timeRemaining.textContent = "";
 
   // display first question
   currentQuestionIndex = 0;
@@ -49,16 +49,16 @@ startButton.addEventListener("click", function (event) {
   $("#pQuestion").toggleClass("hidden");
   $("#olOptions").toggleClass("hidden");
 
-  viewHighScores.innerHTML = "View Highscores";
-  pHighScores.innerHTML = "";
+  viewHighScores.textContent = "View Highscores";
+  pHighScores.textContent = "";
 
   // Start Timer
   timeLeft = 60;
   timeInterval = setInterval(function () {
-    timeRemaining.innerHTML = "Time Left: " + timeLeft;
+    timeRemaining.textContent = "Time Left: " + timeLeft;
 
     if (timeLeft <= 0) {
-      timeRemaining.innerHTML = "Time's up!";
+      timeRemaining.textContent = "Time's up!";
 
       // Calls function to complete quiz
       endQuiz();
@@ -80,7 +80,7 @@ olOptions.addEventListener("click", function (event) {
       // They got it wrong.  Deduct 5 seconds.
       timeLeft -= 5;
       if (timeLeft <= 0) {
-        timeRemaining.innerHTML = "Time Left: " + timeLeft;
+        timeRemaining.textContent = "Time Left: " + timeLeft;
         endQuiz();
       }
     }
@@ -154,20 +154,20 @@ viewHighScores.addEventListener("click", function (event) {
 
 // Function to show the high scores
 function showHighScores() {
-  if (pHighScores.innerHTML == "") {
+  if (pHighScores.textContent == "") {
     if (localStorage.getItem("highScores") != null) {
       highScores = JSON.parse(localStorage.getItem("highScores"));
       for (let i = 0; i < highScores.length; i++) {
         score = highScores[i];
         var dtScore = new Date(score.dateTimeStamp);
-        pHighScores.innerHTML += `Player: ${score.personName}, Score: ${
+        pHighScores.textContent += `Player: ${score.personName}, Score: ${
           score.personScore
         }, DateTime: ${dtScore.toLocaleString()}<br />`;
       }
-      viewHighScores.innerHTML = "Hide Highscores";
+      viewHighScores.textContent = "Hide Highscores";
     }
   } else {
-    viewHighScores.innerHTML = "View Highscores";
+    viewHighScores.textContent = "View Highscores";
     pHighScores.innerHTML = "";
   }
 }
@@ -176,7 +176,7 @@ function displayQuestion(index) {
   if (index < questions.length) {
     question = questions[index];
 
-    pQuestion.innerHTML = question.questionText;
+    pQuestion.textContent = question.questionText;
 
     const answers = Object.values(question.answers);
     var abcd = ["a", "b", "c", "d"];
